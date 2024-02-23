@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SA Age Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 50px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>ID Calculator</h2>
+  
+  <label for="idNumber">Enter your ID Number:</label>
+  <input type="text" id="idNumber" maxlength="13">
+  <button onclick="calculateAge()">submit</button>
+
+  <p id="result"></p>
+
+  <script>
+    function calculateAge() {
+      var idNumber = document.getElementById("idNumber").value;
+
+      // Check if the ID number is valid
+      if (idNumber.length !== 13 || isNaN(idNumber)) {
+        alert("Invalid ID number. Please enter a valid 13-digit number.");
+        return;
+      }
+
+      // Extract birthdate information from the ID number
+      var year = parseInt(idNumber.substring(0, 2));
+      var currentYear = new Date().getFullYear();
+      var century = (year >= currentYear % 100) ? 19 : 20;
+      var birthYear = century * 100 + year;
+      var birthMonth = parseInt(idNumber.substring(2, 4)) - 1; // Month is zero-based
+      var birthDay = parseInt(idNumber.substring(4, 6));
+
+      // Create a Date object with the extracted birthdate
+      var birthDate = new Date(birthYear, birthMonth, birthDay);
+
+      // Calculate age
+      var currentDate = new Date();
+      var age = currentDate.getFullYear() - birthDate.getFullYear();
+
+      // Check if birthday has occurred this year
+      if (currentDate.getMonth() < birthDate.getMonth() ||
+          (currentDate.getMonth() === birthDate.getMonth() && currentDate.getDate() < birthDate.getDate())) {
+        age--;
+      }
+
+      // Display the result
+      document.getElementById("result").innerHTML = "Your age is: " + age + " years.";
+    }
+  </script>
+
+</body>
+</html>
